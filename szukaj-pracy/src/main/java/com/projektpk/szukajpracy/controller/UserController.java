@@ -35,9 +35,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{id_User}")
-    public ResponseEntity<User> getUserById(@PathVariable("id_User") long id_User) {
-        Optional<User> userData = repository.findById(id_User);
+    @GetMapping("/users/{idUser}")
+    public ResponseEntity<User> getUserById(@PathVariable("idUser") long idUser) {
+        Optional<User> userData = repository.findById(idUser);
 
         if (userData.isPresent()) {
             return new ResponseEntity<>(userData.get(), HttpStatus.OK);
@@ -49,17 +49,17 @@ public class UserController {
     @PostMapping(value = "/users")
     public ResponseEntity<User> postUser(@RequestBody User user) {
         try {
-            User _user = repository.save(new User(user.getLogin(), user.getPassword(), user.getUsertype()));
+            User _user = repository.save(new User(user.getLogin(), user.getPassword()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @DeleteMapping("/users/{id_User}")
-    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id_User") long id_User) {
+    @DeleteMapping("/users/{idUser}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("idUser") long idUser) {
         try {
-            repository.deleteById(id_User);
+            repository.deleteById(idUser);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
@@ -77,8 +77,8 @@ public class UserController {
 
     }
 
-    @GetMapping(value = "customers/usertype/{usertype}")
-    public ResponseEntity<List<User>> findByAge(@PathVariable int usertype) {
+    @GetMapping(value = "users/usertype/{usertype}")
+    public ResponseEntity<List<User>> findByusertype(@PathVariable int usertype) {
         try {
             List<User> customers = repository.findByusertype(usertype);
 
@@ -92,13 +92,12 @@ public class UserController {
     }
 
 
-    @PutMapping("/users/{id_User}")
-    public ResponseEntity<User> updateUser(@PathVariable("id_User") long id_User, @RequestBody User user) {
-        Optional<User> userData = repository.findById(id_User);
+    @PutMapping("/users/{idUser}")
+    public ResponseEntity<User> updateUser(@PathVariable("idUser") long idUser, @RequestBody User user) {
+        Optional<User> userData = repository.findById(idUser);
 
         if (userData.isPresent()) {
             User _user = userData.get();
-            _user.setUsertype(user.getUsertype());
             _user.setLogin(user.getLogin());
             _user.setPassword(user.getPassword());
             _user.setActive(user.isActive());

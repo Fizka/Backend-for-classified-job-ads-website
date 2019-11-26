@@ -13,7 +13,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private long id_User;
+    private long idUser;
 
     @Column(name = "password")
     private String password;
@@ -30,19 +30,19 @@ public class User {
     public User(){
     }
 
-    public User(String login, String password, int usertype) {
+    public User(String login, String password) {
         this.password = password;
         this.login = login;
-        this.usertype = usertype;
+        this.usertype = 1;
         this.active = false;
     }
 
-    public long getId_User() {
-        return id_User;
+    public long getIdUser() {
+        return idUser;
     }
 
-    public void setId_User(long id_User) {
-        this.id_User = id_User;
+    public void setIdUser(long idUser) {
+        this.idUser = idUser;
     }
 
     public String getPassword() {
@@ -79,10 +79,10 @@ public class User {
     @Override
     public String toString() {
         return "User{" +
-                "id_User=" + id_User +
+                "idUser=" + idUser +
                 ", password='" + password + '\'' +
                 ", login='" + login + '\'' +
-                ", user_type='" + usertype + '\'' +
+                ", usertype='" + usertype + '\'' +
                 ", active='" + active + '\'' +
                 '}';
     }
