@@ -21,6 +21,9 @@ public class User {
     @Column(name = "login")
     private String login;
 
+    @Column(name = "mail")
+    private String mail;
+
     @Column(name = "usertype")
     private int usertype;
 
@@ -30,11 +33,20 @@ public class User {
     public User(){
     }
 
-    public User(String login, String password) {
+    public User(String login, String password, String mail) {
         this.password = password;
         this.login = login;
         this.usertype = 1;
         this.active = false;
+        this.mail = mail;
+    }
+
+    public String getMail() {
+        return mail;
+    }
+
+    public void setMail(String mail) {
+        this.mail = mail;
     }
 
     public long getIdUser() {
@@ -76,15 +88,16 @@ public class User {
     public void setActive(boolean active) {
         this.active = active;
     }
+
     @Override
     public String toString() {
         return "User{" +
                 "idUser=" + idUser +
                 ", password='" + password + '\'' +
                 ", login='" + login + '\'' +
-                ", usertype='" + usertype + '\'' +
-                ", active='" + active + '\'' +
+                ", mail='" + mail + '\'' +
+                ", usertype=" + usertype +
+                ", active=" + active +
                 '}';
     }
-
 }

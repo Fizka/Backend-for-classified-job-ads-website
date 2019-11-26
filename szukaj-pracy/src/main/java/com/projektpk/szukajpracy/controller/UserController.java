@@ -49,7 +49,7 @@ public class UserController {
     @PostMapping(value = "/users")
     public ResponseEntity<User> postUser(@RequestBody User user) {
         try {
-            User _user = repository.save(new User(user.getLogin(), user.getPassword()));
+            User _user = repository.save(new User(user.getLogin(), user.getPassword(), user.getMail()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -80,12 +80,12 @@ public class UserController {
     @GetMapping(value = "users/usertype/{usertype}")
     public ResponseEntity<List<User>> findByusertype(@PathVariable int usertype) {
         try {
-            List<User> customers = repository.findByusertype(usertype);
+            List<User> users = repository.findByusertype(usertype);
 
-            if (customers.isEmpty()) {
+            if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(customers, HttpStatus.OK);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }
