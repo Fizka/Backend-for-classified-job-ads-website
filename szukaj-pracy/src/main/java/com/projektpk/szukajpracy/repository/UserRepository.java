@@ -6,7 +6,5 @@ import org.springframework.data.repository.CrudRepository;
 
 
 public interface UserRepository extends CrudRepository<User,Long>{
-
-    List<User> findBytype(String type_user);
-
+    List<User> findByusertype(int usertype);
 }

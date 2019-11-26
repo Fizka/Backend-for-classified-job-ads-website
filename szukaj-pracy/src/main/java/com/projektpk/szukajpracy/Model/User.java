@@ -1,17 +1,19 @@
 package com.projektpk.szukajpracy.Model;
 
-
-import org.springframework.data.annotation.Id;
-
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
-@Table(name = "User")
+@Table(name = "user")
 public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
-    private Integer id_User;
+    private long id_User;
 
     @Column(name = "password")
     private String password;
@@ -19,28 +21,27 @@ public class User {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "user_type")
-    private String user_type;
+    @Column(name = "usertype")
+    private int usertype;
 
     @Column(name = "active")
     private boolean active;
 
     public User(){
-
     }
 
-    public User(String login, String password, String user_type) {
+    public User(String login, String password, int usertype) {
         this.password = password;
         this.login = login;
-        this.user_type = user_type;
+        this.usertype = usertype;
         this.active = false;
     }
 
-    public Integer getId_User() {
+    public long getId_User() {
         return id_User;
     }
 
-    public void setId_User(Integer id_User) {
+    public void setId_User(long id_User) {
         this.id_User = id_User;
     }
 
@@ -60,12 +61,12 @@ public class User {
         this.login = login;
     }
 
-    public String getUser_type() {
-        return user_type;
+    public int getUsertype() {
+        return this.usertype;
     }
 
-    public void setUser_type(String user_type) {
-        this.user_type = user_type;
+    public void setUsertype(int usertype) {
+        this.usertype = usertype;
     }
 
     public boolean isActive() {
@@ -81,7 +82,7 @@ public class User {
                 "id_User=" + id_User +
                 ", password='" + password + '\'' +
                 ", login='" + login + '\'' +
-                ", user_type='" + user_type + '\'' +
+                ", user_type='" + usertype + '\'' +
                 ", active='" + active + '\'' +
                 '}';
     }

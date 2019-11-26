@@ -4,13 +4,12 @@ import java.util.List;
 import java.util.Optional;
 
 import com.projektpk.szukajpracy.Model.User;
+
 import com.projektpk.szukajpracy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 
 //mapping for restful request
 @CrossOrigin(origins = "http://localhost:4200")
@@ -21,23 +20,23 @@ public class UserController {
     @Autowired
     UserRepository repository;
 
-    @GetMapping("/User")
-    public ResponseEntity<List<User>> getAllCustomers() {
-        List<User> customers = new ArrayList<>();
+    @GetMapping("/users")
+    public ResponseEntity<List<User>> getAllUsers() {
+        List<User> users = new ArrayList<>();
         try {
-            repository.findAll().forEach(customers::add);
+            repository.findAll().forEach(users::add);
 
-            if (customers.isEmpty()) {
+            if (users.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
-            return new ResponseEntity<>(customers, HttpStatus.OK);
+            return new ResponseEntity<>(users, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 
-    @GetMapping("/User/{id_User}")
-    public ResponseEntity<User> getCustomerById(@PathVariable("id_User") long id_User) {
+    @GetMapping("/users/{id_User}")
+    public ResponseEntity<User> getUserById(@PathVariable("id_User") long id_User) {
         Optional<User> userData = repository.findById(id_User);
 
         if (userData.isPresent()) {
@@ -47,18 +46,18 @@ public class UserController {
         }
     }
 
-    @PostMapping(value = "/User")
+    @PostMapping(value = "/users")
     public ResponseEntity<User> postUser(@RequestBody User user) {
         try {
-            User _user = repository.save(new User(user.getLogin(), user.getPassword(), user.getUser_type()));
+            User _user = repository.save(new User(user.getLogin(), user.getPassword(), user.getUsertype()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @DeleteMapping("/User/{id_User}")
-    public ResponseEntity<HttpStatus> deleteCustomer(@PathVariable("id_User") long id_User) {
+    @DeleteMapping("/users/{id_User}")
+    public ResponseEntity<HttpStatus> deleteUser(@PathVariable("id_User") long id_User) {
         try {
             repository.deleteById(id_User);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -67,8 +66,8 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/User")
-    public ResponseEntity<HttpStatus> deleteAllCustomers() {
+    @DeleteMapping("/users")
+    public ResponseEntity<HttpStatus> deleteAllUsers() {
         try {
             repository.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -78,11 +77,10 @@ public class UserController {
 
     }
 
-
-    @GetMapping(value = "User/user_type/{user_type}")
-    public ResponseEntity<List<User>> findBytype(@PathVariable String user_type) {
+    @GetMapping(value = "customers/usertype/{usertype}")
+    public ResponseEntity<List<User>> findByAge(@PathVariable int usertype) {
         try {
-            List<User> customers = repository.findBytype(user_type);
+            List<User> customers = repository.findByusertype(usertype);
 
             if (customers.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -93,12 +91,14 @@ public class UserController {
         }
     }
 
-    @PutMapping("/customers/{id_USer}")
-    public ResponseEntity<User> updateCustomer(@PathVariable("id_User") long id_User, @RequestBody User user) {
+
+    @PutMapping("/users/{id_User}")
+    public ResponseEntity<User> updateUser(@PathVariable("id_User") long id_User, @RequestBody User user) {
         Optional<User> userData = repository.findById(id_User);
 
         if (userData.isPresent()) {
             User _user = userData.get();
+            _user.setUsertype(user.getUsertype());
             _user.setLogin(user.getLogin());
             _user.setPassword(user.getPassword());
             _user.setActive(user.isActive());
