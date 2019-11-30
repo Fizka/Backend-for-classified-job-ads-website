@@ -91,6 +91,20 @@ public class UserController {
         }
     }
 
+    @GetMapping(value = "users/mail/{mail}")
+    public ResponseEntity<List<User>> findBymail(@PathVariable String mail) {
+        try {
+            List<User> users = repository.findBymail(mail);
+
+            if (users.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
 
     @PutMapping("/users/{idUser}")
     public ResponseEntity<User> updateUser(@PathVariable("idUser") long idUser, @RequestBody User user) {
@@ -100,6 +114,8 @@ public class UserController {
             User _user = userData.get();
             _user.setLogin(user.getLogin());
             _user.setPassword(user.getPassword());
+            _user.setMail(user.getMail());
+            _user.setUsertype(user.getUsertype());
             _user.setActive(user.isActive());
             return new ResponseEntity<>(repository.save(_user), HttpStatus.OK);
         } else {
