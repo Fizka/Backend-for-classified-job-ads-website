@@ -3,7 +3,7 @@ package com.projektpk.szukajpracy.Model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "advertisment")
+@Table(name = "advertisement")
 public class Advertisement {
 
     @Id
@@ -26,15 +26,15 @@ public class Advertisement {
     private String company;
 
     @Column(name = "dateAdded")
-    private int dateAdded;
+    private String dateAdded;
 
     @Column(name = "periodOfValidity")
-    private int periodOfValidity;
+    private String periodOfValidity;
 
     @Column(name = "contractType")
     private String contractType;
 
-    public Advertisement(String title, String industry, String city, int salary, String company, int dateAdded, int periodOfValidity,
+    public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded, String periodOfValidity,
                          String contractType) {
         this.title = title;
         this.industry = industry;
@@ -97,19 +97,19 @@ public class Advertisement {
         this.company = company;
     }
 
-    public int getDateAdded() {
+    public String getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(int dateAdded) {
+    public void setDateAdded(String dateAdded) {
         this.dateAdded = dateAdded;
     }
 
-    public int getPeriodOfValidity() {
+    public String getPeriodOfValidity() {
         return periodOfValidity;
     }
 
-    public void setPeriodOfValidity(int periodOfValidity) {
+    public void setPeriodOfValidity(String periodOfValidity) {
         this.periodOfValidity = periodOfValidity;
     }
 
@@ -128,10 +128,10 @@ public class Advertisement {
                 ", title='" + title + '\'' +
                 ", industry='" + industry + '\'' +
                 ", city='" + city + '\'' +
-                ", salary=" + salary +
+                ", salary=" + salary + '\'' +
                 ", company='" + company + '\'' +
-                ", dateAdded=" + dateAdded +
-                ", periodOfValidity=" + periodOfValidity +
+                ", dateAdded=" + dateAdded + '\'' +
+                ", periodOfValidity=" + periodOfValidity + '\'' +
                 ", contractType='" + contractType + '\'' +
                 '}';
     }

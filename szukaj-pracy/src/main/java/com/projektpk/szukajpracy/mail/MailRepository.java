@@ -1,9 +1,16 @@
 package com.projektpk.szukajpracy.mail;
 
-import org.springframework.stereotype.Repository;
+import com.projektpk.szukajpracy.Model.MessageEnty;
 
-@Repository
-public interface  MailRepository {
-    void sendmail(String from, String name, String feedback);
+import javax.mail.MessagingException;
+
+//mailDao
+public interface  MailRepository  {
+
+    int insertMess(MessageEnty mess) throws MessagingException;
+
+    default int sendMessage(MessageEnty mess) throws MessagingException{
+        return insertMess(mess);
+    }
 }
 

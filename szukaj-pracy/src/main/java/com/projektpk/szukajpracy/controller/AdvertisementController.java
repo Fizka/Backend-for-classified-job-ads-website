@@ -81,13 +81,22 @@ public class AdvertisementController {
     }
 
     @PutMapping("/{idAdvertisement}")
-    public ResponseEntity<Advertisement> updateUser(@PathVariable("idAdvertisement") long idAdvertisement,
-                                                    @RequestBody Advertisement advertisement) {
+    public ResponseEntity<Advertisement> updateAdvertisement(@PathVariable("idAdvertisement") long idAdvertisement,
+                                                             @RequestBody Advertisement advertisement) {
         Optional<Advertisement> advertisementData = repository.findById(idAdvertisement);
 
         if (advertisementData.isPresent()) {
+
             Advertisement _advertisement = advertisementData.get();
-            //tu kod
+           _advertisement.setCity(advertisement.getCity());
+            _advertisement.setCompany(advertisement.getCompany());
+            _advertisement.setContractType(advertisement.getContractType());
+            _advertisement.setDateAdded(advertisement.getDateAdded());
+            _advertisement.setIndustry(advertisement.getIndustry());
+            _advertisement.setPeriodOfValidity(advertisement.getPeriodOfValidity());
+            _advertisement.setSalary(advertisement.getSalary());
+            _advertisement.setTitle(advertisement.getTitle());
+
             return new ResponseEntity<>(repository.save(_advertisement), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

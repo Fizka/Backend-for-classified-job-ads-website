@@ -1,34 +1,29 @@
 package com.projektpk.szukajpracy.controller;
 
 
-import com.projektpk.szukajpracy.Model.Mail;
-import com.projektpk.szukajpracy.mail.MailRepository;
-import org.springframework.validation.BindingResult;
+import com.projektpk.szukajpracy.Model.MessageEnty;
+import com.projektpk.szukajpracy.Service.MailService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.ValidationException;
+import javax.mail.MessagingException;
 
 @RestController
 @RequestMapping("/api/mail")
-@CrossOrigin(origins = "http://localhost:4200")
 public class MailController {
 
-    private MailRepository mailrepo;
+    private  final MailService ms; 
 
-    public MailController(MailRepository mailSender) {
-        this.mailrepo = mailSender;
+    @Autowired
+    public MailController(MailService ms) {
+        this.ms = ms;
     }
 
-    @PostMapping
-    public void sendFeedback(@RequestBody Mail feedbackViewModel,
-                             BindingResult bindingResult)  {
-        if(bindingResult.hasErrors()){
-            throw new ValidationException("Mail has errors; Can not send mail;");
-        }
-
-        this.mailrepo.sendmail(
-                feedbackViewModel.getEmail(),
-                feedbackViewModel.getName(),
-                feedbackViewModel.getMail());
+    @PostMapping()
+    public void sendMessage(@RequestBody MessageEnty me) throws MessagingException
+    {
+        ms.sendMessage(me);
     }
+
+
 }

@@ -1,15 +1,13 @@
 package com.projektpk.szukajpracy.Model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import javax.persistence.*;
+
+@EnableJpaAuditing
 @Entity
 @Table(name = "user")
-public class User {
+public class UserEnt {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -30,10 +28,10 @@ public class User {
     @Column(name = "active")
     private boolean active;
 
-    public User(){
+    public UserEnt(){
     }
 
-    public User(String login, String password, String mail) {
+    public UserEnt(String login, String password, String mail) {
         this.password = password;
         this.login = login;
         this.usertype = 1;
