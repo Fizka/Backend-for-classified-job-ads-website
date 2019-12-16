@@ -29,6 +29,9 @@ public class CV {
     @Column(name = "workExperience")
     private String workExperience;
 
+    @OneToOne
+    private Customer customer_CV;
+
     public CV(int idCustomer, String personalData, String education, String hobbies, String skills, String workExperience) {
         this.idCustomer = idCustomer;
         this.personalData = personalData;

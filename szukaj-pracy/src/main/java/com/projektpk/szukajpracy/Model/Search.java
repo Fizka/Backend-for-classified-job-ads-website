@@ -20,6 +20,9 @@ public class Search {
     @Column(name = "specyfication")
     private String specyfication;
 
+    @OneToOne
+    private Advertisement advertisement_Search;
+
     public Search(String industry, String position, String specyfication) {
         this.industry = industry;
         this.position = position;

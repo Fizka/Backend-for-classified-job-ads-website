@@ -1,7 +1,7 @@
 package com.projektpk.szukajpracy.Model;
 
 import javax.persistence.*;
-
+import java.util.List;
 @Entity
 @Table(name = "advertisement")
 public class Advertisement {
@@ -33,6 +33,24 @@ public class Advertisement {
 
     @Column(name = "contractType")
     private String contractType;
+
+    @ManyToOne
+    private Survey survey_Advertisement;
+
+    @OneToMany
+    private  List <Application> applications_Advertisement;
+
+    @ManyToOne
+    private Company company_Advertisement;
+
+    @ManyToOne
+    private Archives archive_Advertisement;
+
+    @OneToOne
+    private Search search_Advertisement;
+
+
+
 
     public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded, String periodOfValidity,
                          String contractType) {

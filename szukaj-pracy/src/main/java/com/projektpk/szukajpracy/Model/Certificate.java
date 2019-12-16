@@ -19,6 +19,9 @@ public class Certificate {
     @Column(name = "type")
     private String type;
 
+    @ManyToOne
+    private Customer customer_Certficate;
+
     public Certificate(int idCustomer, String title, String type) {
         this.idCustomer = idCustomer;
         this.title = title;

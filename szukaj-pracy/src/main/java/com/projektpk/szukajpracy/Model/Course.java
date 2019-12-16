@@ -19,6 +19,9 @@ public class Course {
     @Column(name = "type")
     private String type;
 
+    @ManyToOne
+    private Customer customer_Curse;
+
     public Course(int idCustomer, String title, String type) {
         this.idCustomer = idCustomer;
         this.title = title;

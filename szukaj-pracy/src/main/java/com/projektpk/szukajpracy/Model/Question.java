@@ -28,6 +28,10 @@ public class Question {
     @Column(name = "title")
     private String title;
 
+    @ManyToOne
+    @JoinColumn(name = "survey_id_survey")
+    private Survey Survey_question;
+
     public Question(String answerOne, String answerTwo, String answerThree, String answerCorrect, String title) {
         this.answerOne = answerOne;
         this.answerTwo = answerTwo;

@@ -1,6 +1,8 @@
 package com.projektpk.szukajpracy.Model;
 
 import javax.persistence.*;
+import java.util.List;
+
 
 @Entity
 @Table(name = "survey")
@@ -18,6 +20,16 @@ public class Survey {
 
     @Column(name = "numberofquestions")
     private int numberofquestions;
+
+    @OneToMany
+    @OrderBy("number")
+    private List <Question> questions_survey;
+
+    @OneToMany
+    private List <Advertisement> advertisements_survey;
+
+    @OneToOne
+    private Company company_Survey;
 
     public Survey(String title, int numberofquestions, int idauthor) {
         this.idauthor = idauthor;

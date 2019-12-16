@@ -1,6 +1,7 @@
 package com.projektpk.szukajpracy.Model;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "company")
@@ -30,6 +31,22 @@ public class Company {
 
     @Column(name = "KRS")
     private int KRS;
+
+    @OneToMany
+    private List<Advertisement> advertisement_Company;
+
+    @OneToMany
+    private  List<Application> applications_Company;
+
+    @OneToOne
+    private Survey survey_Company;
+
+    @OneToMany
+    private List<MessageEnty> messageEnties_Company;
+
+    @OneToOne
+    private User user_Company;
+
 
     public Company(String companyName, String address, String city, int mail, int postalcode, int REGON, int KRS) {
         this.companyName = companyName;

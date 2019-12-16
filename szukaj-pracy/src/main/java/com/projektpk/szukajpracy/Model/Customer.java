@@ -1,6 +1,7 @@
 package com.projektpk.szukajpracy.Model;
 
 import javax.persistence.*;
+import java.util.List;
 
 
 @Entity
@@ -34,6 +35,24 @@ public class Customer {
 
     @Column(name = "cv")
     private boolean cv;
+
+    @OneToMany
+    private List<Application> applications_Customer;
+
+    @OneToOne
+    private User user_Customer;
+
+    @OneToMany
+    private List<MessageEnty> messageEnties_Customer;
+
+    @OneToOne
+    private CV cv_Customer;
+
+    @OneToMany
+    private List<Course> courses_Customer;
+
+    @OneToMany
+    private List<Certificate> certificates_Customer;
 
     public Customer(String firstName, String lastName, String address, int pesel, int phonenumber) {
         this.firstName = firstName;

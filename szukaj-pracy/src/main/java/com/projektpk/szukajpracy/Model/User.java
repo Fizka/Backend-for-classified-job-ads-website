@@ -7,7 +7,7 @@ import javax.persistence.*;
 @EnableJpaAuditing
 @Entity
 @Table(name = "user")
-public class UserEnt {
+public class User {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -28,10 +28,16 @@ public class UserEnt {
     @Column(name = "active")
     private boolean active;
 
-    public UserEnt(){
+    @OneToOne
+    private Company company_User;
+
+    @OneToOne
+    private Customer customer_User;
+
+    public User(){
     }
 
-    public UserEnt(String login, String password, String mail) {
+    public User(String login, String password, String mail) {
         this.password = password;
         this.login = login;
         this.usertype = 1;

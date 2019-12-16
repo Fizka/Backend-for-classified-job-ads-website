@@ -25,6 +25,15 @@ public class Application {
     @Column(name = "address")
     private String address;
 
+    @ManyToOne
+    private Advertisement advertisement_Application;
+
+    @ManyToOne
+    private Company company_Application;
+
+    @ManyToOne
+    private Customer customers_Application;
+
     public Application(String firstName, String lastName, String mail, int phoneNumber, String address) {
         this.firstName = firstName;
         this.lastName = lastName;
