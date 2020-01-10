@@ -1,11 +1,13 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "company")
-public class Company {
+public class Company implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,7 +23,7 @@ public class Company {
     private String city;
 
     @Column(name = "mail")
-    private int mail;
+    private String mail;
 
     @Column(name = "postalcode")
     private int postalcode;
@@ -32,23 +34,39 @@ public class Company {
     @Column(name = "KRS")
     private int KRS;
 
-    @OneToMany
-    private List<Advertisement> advertisement_Company;
-
-    @OneToMany
-    private  List<Application> applications_Company;
-
-    @OneToOne
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "survey"
+    )
+    @JsonIgnore
     private Survey survey_Company;
 
-    @OneToMany
-    private List<MessageEnty> messageEnties_Company;
 
-    @OneToOne
-    private User user_Company;
+    //user
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "user_idUser", nullable = false)
+    @JsonIgnore
+    private User user_company;
 
+    public Company() {
+    }
 
-    public Company(String companyName, String address, String city, int mail, int postalcode, int REGON, int KRS) {
+    public Company(String companyName, String address, String city, String mail, int postalcode, int REGON, int KRS, User user_company) {
+        this.companyName = companyName;
+        this.address = address;
+        this.city = city;
+        this.mail = mail;
+        this.postalcode = postalcode;
+        this.REGON = REGON;
+        this.KRS = KRS;
+        this.user_company = user_company;
+    }
+
+    public Company(String companyName, String address, String city, String mail, int postalcode, int REGON, int KRS) {
         this.companyName = companyName;
         this.address = address;
         this.city = city;
@@ -58,7 +76,7 @@ public class Company {
         this.KRS = KRS;
     }
 
-    public Company(String companyName, String address, String city, int mail, int postalcode) {
+    public Company(String companyName, String address, String city, String mail, int postalcode) {
         this.companyName = companyName;
         this.address = address;
         this.city = city;
@@ -98,11 +116,11 @@ public class Company {
         this.city = city;
     }
 
-    public int getMail() {
+    public String getMail() {
         return mail;
     }
 
-    public void setMail(int mail) {
+    public void setMail(String mail) {
         this.mail = mail;
     }
 
@@ -128,6 +146,22 @@ public class Company {
 
     public void setKRS(int KRS) {
         this.KRS = KRS;
+    }
+
+    public Survey getSurvey_Company() {
+        return survey_Company;
+    }
+
+    public void setSurvey_Company(Survey survey_Company) {
+        this.survey_Company = survey_Company;
+    }
+
+    public User getUser_company() {
+        return user_company;
+    }
+
+    public void setUser_company(User user_company) {
+        this.user_company = user_company;
     }
 
     @Override

@@ -10,7 +10,6 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.util.ArrayList;
 import java.util.List;
-
 @Repository("sm")
 public class MailSenderComponent  implements MailRepository{
 

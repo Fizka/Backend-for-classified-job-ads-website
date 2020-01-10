@@ -1,10 +1,13 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
+
 @Entity
 @Table(name = "advertisement")
-public class Advertisement {
+public class Advertisement implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -34,23 +37,62 @@ public class Advertisement {
     @Column(name = "contractType")
     private String contractType;
 
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "survey_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Survey survey_Advertisement;
 
-    @OneToMany
-    private  List <Application> applications_Advertisement;
-
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "company_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Company company_Advertisement;
 
-    @ManyToOne
-    private Archives archive_Advertisement;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "search_id", nullable = false)
+    @JsonIgnore
+    private Search advertisement_Search;
 
-    @OneToOne
-    private Search search_Advertisement;
+    /*
+    //application
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "advertisement"
+    )
+    @JsonIgnore
+    private Application application;
+*/
 
 
-
+    public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded,
+                         String periodOfValidity, String contractType, Survey survey_Advertisement, Company company_Advertisement,Search advertisement_Search) {
+        this.title = title;
+        this.industry = industry;
+        this.city = city;
+        this.salary = salary;
+        this.company = company;
+        this.dateAdded = dateAdded;
+        this.periodOfValidity = periodOfValidity;
+        this.contractType = contractType;
+        this.survey_Advertisement = survey_Advertisement;
+        this.company_Advertisement = company_Advertisement;
+        this.advertisement_Search = advertisement_Search;
+    }
 
     public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded, String periodOfValidity,
                          String contractType) {
@@ -138,6 +180,40 @@ public class Advertisement {
     public void setContractType(String contractType) {
         this.contractType = contractType;
     }
+
+    public Survey getSurvey_Advertisement() {
+        return survey_Advertisement;
+    }
+
+    public void setSurvey_Advertisement(Survey survey_Advertisement) {
+        this.survey_Advertisement = survey_Advertisement;
+    }
+
+    public Company getCompany_Advertisement() {
+        return company_Advertisement;
+    }
+
+    public void setCompany_Advertisement(Company company_Advertisement) {
+        this.company_Advertisement = company_Advertisement;
+    }
+
+    public Search getAdvertisement_Search() {
+        return advertisement_Search;
+    }
+
+    public void setAdvertisement_Search(Search advertisement_Search) {
+        this.advertisement_Search = advertisement_Search;
+    }
+
+    /*
+    public Application getApplication() {
+        return application;
+    }
+
+    public void setApplication(Application application) {
+        this.application = application;
+    }
+*/
 
     @Override
     public String toString() {

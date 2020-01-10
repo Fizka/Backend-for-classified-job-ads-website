@@ -1,17 +1,17 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "course")
-public class Course {
+public class Course implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long idCourse;
-
-    @Column(name = "idCustomer")
-    private int idCustomer;
 
     @Column(name = "title")
     private String title;
@@ -19,11 +19,27 @@ public class Course {
     @Column(name = "type")
     private String type;
 
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "customer_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Customer customer_Curse;
 
-    public Course(int idCustomer, String title, String type) {
-        this.idCustomer = idCustomer;
+    public Course( String title, String type, Customer customer_Curse) {
+        this.title = title;
+        this.type = type;
+        this.customer_Curse = customer_Curse;
+    }
+
+    public Course() {
+    }
+
+    public Course( String title, String type) {
         this.title = title;
         this.type = type;
     }
@@ -34,14 +50,6 @@ public class Course {
 
     public void setIdCourse(long idCourse) {
         this.idCourse = idCourse;
-    }
-
-    public int getIdCustomer() {
-        return idCustomer;
-    }
-
-    public void setIdCustomer(int idCustomer) {
-        this.idCustomer = idCustomer;
     }
 
     public String getTitle() {
@@ -60,11 +68,18 @@ public class Course {
         this.type = type;
     }
 
+    public Customer getCustomer_Curse() {
+        return customer_Curse;
+    }
+
+    public void setCustomer_Curse(Customer customer_Curse) {
+        this.customer_Curse = customer_Curse;
+    }
+
     @Override
     public String toString() {
         return "Course{" +
                 "idCourse=" + idCourse +
-                ", idCustomer=" + idCustomer +
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 '}';

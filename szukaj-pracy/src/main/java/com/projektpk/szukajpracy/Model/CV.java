@@ -1,18 +1,18 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "CV")
-public class CV {
+public class CV implements Serializable {
 
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long idCV;
-
-    @Column(name = "idCustomer")
-    private int idCustomer;
 
     @Column(name = "personalData")
     private String personalData;
@@ -29,11 +29,27 @@ public class CV {
     @Column(name = "workExperience")
     private String workExperience;
 
-    @OneToOne
-    private Customer customer_CV;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "customer_id", nullable = false)
+    @JsonIgnore
+    private Customer cv;
 
-    public CV(int idCustomer, String personalData, String education, String hobbies, String skills, String workExperience) {
-        this.idCustomer = idCustomer;
+    public CV() {
+    }
+
+    public CV( String personalData, String education, String hobbies, String skills, String workExperience, Customer cv) {
+        this.personalData = personalData;
+        this.education = education;
+        this.hobbies = hobbies;
+        this.skills = skills;
+        this.workExperience = workExperience;
+        this.cv = cv;
+    }
+
+    public CV( String personalData, String education, String hobbies, String skills, String workExperience) {
         this.personalData = personalData;
         this.education = education;
         this.hobbies = hobbies;
@@ -47,14 +63,6 @@ public class CV {
 
     public void setIdCV(long idCV) {
         this.idCV = idCV;
-    }
-
-    public int getIdCustomer() {
-        return idCustomer;
-    }
-
-    public void setIdCustomer(int idCustomer) {
-        this.idCustomer = idCustomer;
     }
 
     public String getPersonalData() {
@@ -97,11 +105,18 @@ public class CV {
         this.workExperience = workExperience;
     }
 
+    public Customer getCv() {
+        return cv;
+    }
+
+    public void setCv(Customer cv) {
+        this.cv = cv;
+    }
+
     @Override
     public String toString() {
         return "CV{" +
                 "idCV=" + idCV +
-                ", idCustomer=" + idCustomer +
                 ", personalData='" + personalData + '\'' +
                 ", education='" + education + '\'' +
                 ", hobbies='" + hobbies + '\'' +

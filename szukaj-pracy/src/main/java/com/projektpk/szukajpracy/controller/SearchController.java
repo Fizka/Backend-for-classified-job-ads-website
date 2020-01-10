@@ -1,6 +1,5 @@
 package com.projektpk.szukajpracy.controller;
 
-
 import com.projektpk.szukajpracy.Model.Search;
 import com.projektpk.szukajpracy.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +10,9 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/search")
+@RequestMapping("/api/")
 public class SearchController {
 
     @Autowired
@@ -35,7 +33,7 @@ public class SearchController {
         }
     }
 
-    @GetMapping("/users/{idUser}")
+    @GetMapping("/search/{idSearch}")
     public ResponseEntity<Search> getSearchById(@PathVariable("idSearch") long idSearch) {
         Optional<Search> searchData = repository.findById(idSearch);
 

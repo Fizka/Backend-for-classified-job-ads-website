@@ -1,10 +1,13 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "question")
-public class Question {
+public class Question implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -28,9 +31,30 @@ public class Question {
     @Column(name = "title")
     private String title;
 
-    @ManyToOne
-    @JoinColumn(name = "survey_id_survey")
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "survey_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Survey Survey_question;
+
+    public Question() {
+    }
+
+    public Question(String idSurvey, String answerOne, String answerTwo, String answerThree, String answerCorrect,
+                    String title, Survey survey_question) {
+        this.idSurvey = idSurvey;
+        this.answerOne = answerOne;
+        this.answerTwo = answerTwo;
+        this.answerThree = answerThree;
+        this.answerCorrect = answerCorrect;
+        this.title = title;
+        Survey_question = survey_question;
+    }
 
     public Question(String answerOne, String answerTwo, String answerThree, String answerCorrect, String title) {
         this.answerOne = answerOne;
@@ -94,6 +118,14 @@ public class Question {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public Survey getSurvey_question() {
+        return Survey_question;
+    }
+
+    public void setSurvey_question(Survey survey_question) {
+        Survey_question = survey_question;
     }
 
     @Override

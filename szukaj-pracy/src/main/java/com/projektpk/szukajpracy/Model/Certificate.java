@@ -1,17 +1,17 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "certificate")
-public class Certificate {
+public class Certificate implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
     private long idCertificate;
-
-    @Column(name = "idCustomer")
-    private int idCustomer;
 
     @Column(name = "title")
     private String title;
@@ -19,11 +19,27 @@ public class Certificate {
     @Column(name = "type")
     private String type;
 
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "customer_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Customer customer_Certficate;
 
-    public Certificate(int idCustomer, String title, String type) {
-        this.idCustomer = idCustomer;
+    public Certificate() {
+    }
+
+    public Certificate( String title, String type, Customer customer_Certficate) {
+        this.title = title;
+        this.type = type;
+        this.customer_Certficate = customer_Certficate;
+    }
+
+    public Certificate( String title, String type) {
         this.title = title;
         this.type = type;
     }
@@ -34,14 +50,6 @@ public class Certificate {
 
     public void setIdCertificate(long idCertificate) {
         this.idCertificate = idCertificate;
-    }
-
-    public int getIdCustomer() {
-        return idCustomer;
-    }
-
-    public void setIdCustomer(int idCustomer) {
-        this.idCustomer = idCustomer;
     }
 
     public String getTitle() {
@@ -60,11 +68,18 @@ public class Certificate {
         this.type = type;
     }
 
+    public Customer getCustomer_Certficate() {
+        return customer_Certficate;
+    }
+
+    public void setCustomer_Certficate(Customer customer_Certficate) {
+        this.customer_Certficate = customer_Certficate;
+    }
+
     @Override
     public String toString() {
         return "Certificate{" +
                 "idCertificate=" + idCertificate +
-                ", idCustomer=" + idCustomer +
                 ", title='" + title + '\'' +
                 ", type='" + type + '\'' +
                 '}';

@@ -1,12 +1,14 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "survey")
-public class Survey {
+public class Survey implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -21,20 +23,28 @@ public class Survey {
     @Column(name = "numberofquestions")
     private int numberofquestions;
 
-    @OneToMany
-    @OrderBy("number")
-    private List <Question> questions_survey;
-
-    @OneToMany
-    private List <Advertisement> advertisements_survey;
-
-    @OneToOne
-    private Company company_Survey;
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "company_id", nullable = false)
+    @JsonIgnore
+    private Company survey;
 
     public Survey(String title, int numberofquestions, int idauthor) {
         this.idauthor = idauthor;
         this.title = title;
         this.numberofquestions = numberofquestions;
+    }
+
+    public Survey(String title, int idauthor, int numberofquestions, Company survey) {
+        this.title = title;
+        this.idauthor = idauthor;
+        this.numberofquestions = numberofquestions;
+        this.survey = survey;
+    }
+
+    public Survey() {
     }
 
     public long getIdSurvey() {
@@ -67,6 +77,14 @@ public class Survey {
 
     public void setNumberofquestions(int numberofquestions) {
         this.numberofquestions = numberofquestions;
+    }
+
+    public Company getSurvey() {
+        return survey;
+    }
+
+    public void setSurvey(Company survey) {
+        this.survey = survey;
     }
 
     @Override

@@ -1,10 +1,13 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-@Table(name = "application")
-public class Application {
+@org.hibernate.annotations.Table(appliesTo = "application")
+public class Application implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -25,14 +28,52 @@ public class Application {
     @Column(name = "address")
     private String address;
 
-    @ManyToOne
-    private Advertisement advertisement_Application;
-
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "company_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Company company_Application;
 
-    @ManyToOne
+    @ManyToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(
+            name = "customer_id",
+            nullable = false
+    )
+    @JsonIgnore
     private Customer customers_Application;
+
+
+    //advertismenemt
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "advertisement_id", nullable = false)
+    @JsonIgnore
+    private Advertisement advertisement;
+
+    public Application() {
+    }
+
+    public Application(String firstName, String lastName, String mail,
+                       int phoneNumber, String address, Company company_Application, Customer customers_Application, Advertisement advertisement) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.mail = mail;
+        this.phoneNumber = phoneNumber;
+        this.address = address;
+        this.company_Application = company_Application;
+        this.customers_Application = customers_Application;
+        this.advertisement = advertisement;
+    }
 
     public Application(String firstName, String lastName, String mail, int phoneNumber, String address) {
         this.firstName = firstName;
@@ -88,6 +129,30 @@ public class Application {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public Company getCompany_Application() {
+        return company_Application;
+    }
+
+    public void setCompany_Application(Company company_Application) {
+        this.company_Application = company_Application;
+    }
+
+    public Customer getCustomers_Application() {
+        return customers_Application;
+    }
+
+    public void setCustomers_Application(Customer customers_Application) {
+        this.customers_Application = customers_Application;
+    }
+
+    public Advertisement getAdvertisement() {
+        return advertisement;
+    }
+
+    public void setAdvertisement(Advertisement advertisement) {
+        this.advertisement = advertisement;
     }
 
     @Override

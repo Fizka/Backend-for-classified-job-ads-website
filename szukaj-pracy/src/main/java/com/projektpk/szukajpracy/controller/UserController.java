@@ -46,6 +46,20 @@ public class UserController {
         }
     }
 
+    @GetMapping("/users/login/{login}")
+    public ResponseEntity<List<User>> getUserBylogin(@PathVariable("login") String login) {
+        try{
+        List <User> userData = repository.findByLogin(login);
+
+        if (userData.isEmpty()) {
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<>(userData, HttpStatus.OK);
+    } catch (Exception e) {
+        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+    }
+    }
+
 
     @PostMapping(value = "/users")
     public ResponseEntity<User> postUser(@RequestBody User user) {

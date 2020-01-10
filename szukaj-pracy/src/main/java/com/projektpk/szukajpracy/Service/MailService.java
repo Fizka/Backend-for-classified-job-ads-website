@@ -1,6 +1,6 @@
 package com.projektpk.szukajpracy.Service;
 
-import com.projektpk.szukajpracy.Model.MessageEnty;
+import com.projektpk.szukajpracy.Model.*;
 import com.projektpk.szukajpracy.mail.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

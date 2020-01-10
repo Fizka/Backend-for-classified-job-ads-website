@@ -4,7 +4,10 @@ package com.projektpk.szukajpracy.controller;
 import com.projektpk.szukajpracy.Model.MessageEnty;
 import com.projektpk.szukajpracy.Service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.mail.MessagingException;
 
@@ -12,7 +15,7 @@ import javax.mail.MessagingException;
 @RequestMapping("/api/mail")
 public class MailController {
 
-    private  final MailService ms; 
+    private  final MailService ms;
 
     @Autowired
     public MailController(MailService ms) {
@@ -20,9 +23,9 @@ public class MailController {
     }
 
     @PostMapping()
-    public void sendMessage(@RequestBody MessageEnty me) throws MessagingException
+    public void sendMessage(@RequestBody MessageEnty messs) throws MessagingException
     {
-        ms.sendMessage(me);
+        ms.sendMessage(messs);
     }
 
 

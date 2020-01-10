@@ -1,6 +1,6 @@
 package com.projektpk.szukajpracy.repository;
 
-import com.projektpk.szukajpracy.Model.Survey;
+import com.projektpk.szukajpracy.Model.*;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

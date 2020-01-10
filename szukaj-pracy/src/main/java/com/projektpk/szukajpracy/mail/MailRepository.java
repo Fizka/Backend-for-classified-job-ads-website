@@ -3,7 +3,6 @@ package com.projektpk.szukajpracy.mail;
 import com.projektpk.szukajpracy.Model.MessageEnty;
 
 import javax.mail.MessagingException;
-
 //mailDao
 public interface  MailRepository  {
 

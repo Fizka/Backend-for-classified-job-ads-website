@@ -1,12 +1,14 @@
 package com.projektpk.szukajpracy.Model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
-import java.util.List;
+import java.io.Serializable;
 
 
 @Entity
 @Table(name = "customer")
-public class Customer {
+public class Customer implements Serializable {
 
     @Id
     @GeneratedValue(strategy= GenerationType.AUTO)
@@ -36,23 +38,41 @@ public class Customer {
     @Column(name = "cv")
     private boolean cv;
 
-    @OneToMany
-    private List<Application> applications_Customer;
 
-    @OneToOne
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            optional = false
+    )
+    @JoinColumn(name = "user_id", nullable = false)
+    @JsonIgnore
     private User user_Customer;
 
-    @OneToMany
-    private List<MessageEnty> messageEnties_Customer;
-
-    @OneToOne
+    /*
+    @OneToOne(
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL,
+            mappedBy = "cv"
+    )
+    @JsonIgnore
     private CV cv_Customer;
+*/
+    public Customer() {
+    }
 
-    @OneToMany
-    private List<Course> courses_Customer;
 
-    @OneToMany
-    private List<Certificate> certificates_Customer;
+    public Customer(String firstName, String lastName,
+                    String address, int pesel, int phonenumber, boolean certificate,
+                    boolean course, boolean cv, User user_Customer) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+        this.pesel = pesel;
+        this.phonenumber = phonenumber;
+        this.certificate = certificate;
+        this.course = course;
+        this.cv = cv;
+        this.user_Customer = user_Customer;
+    }
 
     public Customer(String firstName, String lastName, String address, int pesel, int phonenumber) {
         this.firstName = firstName;
@@ -140,6 +160,22 @@ public class Customer {
         this.cv = cv;
     }
 
+    public User getUser_Customer() {
+        return user_Customer;
+    }
+
+    public void setUser_Customer(User user_Customer) {
+        this.user_Customer = user_Customer;
+    }
+/*
+    public CV getCv_Customer() {
+        return cv_Customer;
+    }
+
+    public void setCv_Customer(CV cv_Customer) {
+        this.cv_Customer = cv_Customer;
+    }
+*/
     @Override
     public String toString() {
         return "Customer{" +
