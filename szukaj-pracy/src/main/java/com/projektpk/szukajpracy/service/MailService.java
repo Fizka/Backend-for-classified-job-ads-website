@@ -1,7 +1,7 @@
-package com.projektpk.szukajpracy.Service;
+package com.projektpk.szukajpracy.service;
 
-import com.projektpk.szukajpracy.Model.*;
-import com.projektpk.szukajpracy.mail.MailRepository;
+import com.projektpk.szukajpracy.model.*;
+import com.projektpk.szukajpracy.repository.MailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -18,8 +18,7 @@ public class MailService {
         this.mr = mr;
     }
 
-    public int sendMessage(MessageEnty mess) throws MessagingException
-    {
+    public int sendMessage(MessageEnty mess) throws MessagingException {
         return mr.insertMess(mess);
     }
 }

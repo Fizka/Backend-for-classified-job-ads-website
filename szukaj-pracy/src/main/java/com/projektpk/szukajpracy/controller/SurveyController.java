@@ -1,6 +1,8 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.Survey;
+import com.projektpk.szukajpracy.model.Company;
+import com.projektpk.szukajpracy.model.Survey;
+import com.projektpk.szukajpracy.repository.CompanyRepository;
 import com.projektpk.szukajpracy.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,6 +20,9 @@ public class SurveyController {
     @Autowired
     SurveyRepository repository;
 
+    @Autowired
+    CompanyRepository companyRepository;
+
     @GetMapping("/survey")
     public ResponseEntity<List<Survey>> getAllSurvey() {
         List<Survey> survey = new ArrayList<>();
@@ -33,7 +38,6 @@ public class SurveyController {
         }
     }
 
-
     @GetMapping("/survey/{idSurvey}")
     public ResponseEntity<Survey> getSurveyById(@PathVariable("idSurvey") long idSurvey) {
         Optional<Survey> surveyData = repository.findById(idSurvey);
@@ -45,11 +49,13 @@ public class SurveyController {
         }
     }
 
-
-    @PostMapping(value = "/survey")
-    public ResponseEntity<Survey> postSurvey(@RequestBody Survey survey) {
+    @PostMapping(value = "/survey/{NIP}")
+    public ResponseEntity<Survey> postSurvey(@PathVariable("NIP") long NIP,@RequestBody Survey survey) {
         try {
-            Survey _survey = repository.save(new Survey(survey.getTitle(), survey.getNumberofquestions(), survey.getIdauthor()));
+            Optional<Company> companyData = companyRepository.findById(NIP);
+            Survey surver_ = new Survey(survey.getTitle(), survey.getNumberofquestions());
+            surver_.setSurvey(companyData.get());
+            Survey _survey = repository.save(surver_);
             return new ResponseEntity<>(_survey, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -59,6 +65,7 @@ public class SurveyController {
     @DeleteMapping("/survey/{idSurvey}")
     public ResponseEntity<HttpStatus> deleteSurvey(@PathVariable("idSurvey") long idSurvey) {
         try {
+
             repository.deleteById(idSurvey);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (Exception e) {
@@ -71,21 +78,6 @@ public class SurveyController {
         try {
             repository.deleteAll();
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (Exception e) {
-            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-        }
-
-    }
-
-    @GetMapping(value = "survey/Idauthor/{Idauthor}")
-    public ResponseEntity<List<Survey>> findByusertype(@PathVariable int Idauthor) {
-        try {
-            List<Survey> survey = repository.findByIdauthor(Idauthor);
-
-            if (survey.isEmpty()) {
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-            }
-            return new ResponseEntity<>(survey, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
         }

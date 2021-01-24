@@ -1,18 +1,16 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.io.Serializable;
-
 
 @Entity
 @Table(name = "Message")
 public class MessageEnty implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idMessage;
 
     @Column(name = "mailSender")
@@ -33,41 +31,7 @@ public class MessageEnty implements Serializable {
     @Column(name = "textMessage")
     private String textMessage;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(
-            name = "company_id",
-            nullable = false
-    )
-    @JsonIgnore
-    private Company company_MessageEnty;
-
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(
-            name = "customer_id",
-            nullable = false
-    )
-    @JsonIgnore
-    private Customer customer_MessageEnty;
-
     public MessageEnty() {
-    }
-
-    public MessageEnty(String mailSender, String particularsSender, String title, String mailConsignee, String particularsConsignee,
-                       String textMessage, Company company_MessageEnty, Customer customer_MessageEnty) {
-        this.mailSender = mailSender;
-        this.particularsSender = particularsSender;
-        this.title = title;
-        this.mailConsignee = mailConsignee;
-        this.particularsConsignee = particularsConsignee;
-        this.textMessage = textMessage;
-        this.company_MessageEnty = company_MessageEnty;
-        this.customer_MessageEnty = customer_MessageEnty;
     }
 
     public MessageEnty(@JsonProperty("mailSender") String mailSender, @JsonProperty("title") String title, @JsonProperty("textMessage") String textMessage) {
@@ -153,19 +117,4 @@ public class MessageEnty implements Serializable {
         this.idMessage = idMessage;
     }
 
-    public Company getCompany_MessageEnty() {
-        return company_MessageEnty;
-    }
-
-    public void setCompany_MessageEnty(Company company_MessageEnty) {
-        this.company_MessageEnty = company_MessageEnty;
-    }
-
-    public Customer getCustomer_MessageEnty() {
-        return customer_MessageEnty;
-    }
-
-    public void setCustomer_MessageEnty(Customer customer_MessageEnty) {
-        this.customer_MessageEnty = customer_MessageEnty;
-    }
 }

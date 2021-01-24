@@ -1,8 +1,8 @@
 package com.projektpk.szukajpracy.controller;
 
 
-import com.projektpk.szukajpracy.Model.MessageEnty;
-import com.projektpk.szukajpracy.Service.MailService;
+import com.projektpk.szukajpracy.model.MessageEnty;
+import com.projektpk.szukajpracy.service.MailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

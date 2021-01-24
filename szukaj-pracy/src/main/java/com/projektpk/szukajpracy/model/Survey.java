@@ -1,24 +1,20 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
-
 @Entity
 @Table(name = "survey")
 public class Survey implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idSurvey;
 
     @Column(name = "title")
     private String title;
-
-    @Column(name = "idauthor")
-    private int idauthor;
 
     @Column(name = "numberofquestions")
     private int numberofquestions;
@@ -31,15 +27,13 @@ public class Survey implements Serializable {
     @JsonIgnore
     private Company survey;
 
-    public Survey(String title, int numberofquestions, int idauthor) {
-        this.idauthor = idauthor;
+    public Survey(String title, int numberofquestions) {
         this.title = title;
         this.numberofquestions = numberofquestions;
     }
 
-    public Survey(String title, int idauthor, int numberofquestions, Company survey) {
+    public Survey(String title, int numberofquestions, Company survey) {
         this.title = title;
-        this.idauthor = idauthor;
         this.numberofquestions = numberofquestions;
         this.survey = survey;
     }
@@ -63,14 +57,6 @@ public class Survey implements Serializable {
         this.title = title;
     }
 
-    public int getIdauthor() {
-        return idauthor;
-    }
-
-    public void setIdauthor(int idauthor) {
-        this.idauthor = idauthor;
-    }
-
     public int getNumberofquestions() {
         return numberofquestions;
     }
@@ -92,7 +78,6 @@ public class Survey implements Serializable {
         return "Survey{" +
                 "idSurvey=" + idSurvey +
                 ", title='" + title + '\'' +
-                ", idauthor='" + idauthor + '\'' +
                 ", numberofquestions=" + numberofquestions +
                 '}';
     }

@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Application implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idApplication;
 
     @Column(name = "firstName")
@@ -37,7 +37,7 @@ public class Application implements Serializable {
             nullable = false
     )
     @JsonIgnore
-    private Company company_Application;
+    private Company companyApplication;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
@@ -48,7 +48,7 @@ public class Application implements Serializable {
             nullable = false
     )
     @JsonIgnore
-    private Customer customers_Application;
+    private Customer customersApplication;
 
 
     //advertismenemt
@@ -70,8 +70,8 @@ public class Application implements Serializable {
         this.mail = mail;
         this.phoneNumber = phoneNumber;
         this.address = address;
-        this.company_Application = company_Application;
-        this.customers_Application = customers_Application;
+        this.companyApplication = company_Application;
+        this.customersApplication = customers_Application;
         this.advertisement = advertisement;
     }
 
@@ -132,19 +132,19 @@ public class Application implements Serializable {
     }
 
     public Company getCompany_Application() {
-        return company_Application;
+        return companyApplication;
     }
 
     public void setCompany_Application(Company company_Application) {
-        this.company_Application = company_Application;
+        this.companyApplication = company_Application;
     }
 
     public Customer getCustomers_Application() {
-        return customers_Application;
+        return customersApplication;
     }
 
     public void setCustomers_Application(Customer customers_Application) {
-        this.customers_Application = customers_Application;
+        this.customersApplication = customers_Application;
     }
 
     public Advertisement getAdvertisement() {

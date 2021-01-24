@@ -1,16 +1,18 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "advertisement")
 public class Advertisement implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idAdvertisement;
 
     @Column(name = "title")
@@ -28,25 +30,19 @@ public class Advertisement implements Serializable {
     @Column(name = "company")
     private String company;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "dateAdded")
-    private String dateAdded;
+    private LocalDate dateAdded;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     @Column(name = "periodOfValidity")
-    private String periodOfValidity;
+    private LocalDate periodOfValidity;
 
     @Column(name = "contractType")
     private String contractType;
 
-    @ManyToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(
-            name = "survey_id",
-            nullable = false
-    )
-    @JsonIgnore
-    private Survey survey_Advertisement;
+    @Column(name = "contents")
+    private String contents;
 
     @ManyToOne(
             fetch = FetchType.LAZY,
@@ -54,56 +50,61 @@ public class Advertisement implements Serializable {
     )
     @JoinColumn(
             name = "company_id",
-            nullable = false
+            nullable = true
     )
     @JsonIgnore
-    private Company company_Advertisement;
-
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(name = "search_id", nullable = false)
-    @JsonIgnore
-    private Search advertisement_Search;
-
-    /*
-    //application
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            cascade = CascadeType.ALL,
-            mappedBy = "advertisement"
-    )
-    @JsonIgnore
-    private Application application;
-*/
+    private Company companyAdvertisement;
 
 
-    public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded,
-                         String periodOfValidity, String contractType, Survey survey_Advertisement, Company company_Advertisement,Search advertisement_Search) {
+    public Advertisement(String title, String industry, String city, int salary, String company,
+                         CharSequence periodOfValidity, String contractType, Company company_Advertisement,
+                         Search advertisement_Search) {
         this.title = title;
         this.industry = industry;
         this.city = city;
         this.salary = salary;
         this.company = company;
-        this.dateAdded = dateAdded;
-        this.periodOfValidity = periodOfValidity;
+        this.dateAdded = LocalDate.now();
+        this.periodOfValidity = LocalDate.parse(periodOfValidity);
+        ;
         this.contractType = contractType;
-        this.survey_Advertisement = survey_Advertisement;
-        this.company_Advertisement = company_Advertisement;
-        this.advertisement_Search = advertisement_Search;
+        this.companyAdvertisement = company_Advertisement;
+
     }
 
-    public Advertisement(String title, String industry, String city, int salary, String company, String dateAdded, String periodOfValidity,
-                         String contractType) {
+    public Advertisement(String title, String industry, String city, int salary, String company,
+                         String contractType, String contents) {
         this.title = title;
         this.industry = industry;
         this.city = city;
         this.salary = salary;
         this.company = company;
-        this.dateAdded = dateAdded;
-        this.periodOfValidity = periodOfValidity;
+        this.dateAdded = LocalDate.now();
+        this.periodOfValidity = LocalDate.now().plusDays(60);
         this.contractType = contractType;
+        this.contents = contents;
+    }
+
+    public Advertisement(String title, String industry, String city, int salary, String company, CharSequence periodOfValidity,
+                         String contractType, String contents) {
+        this.title = title;
+        this.industry = industry;
+        this.city = city;
+        this.salary = salary;
+        this.company = company;
+        this.dateAdded = LocalDate.now();
+        this.periodOfValidity = LocalDate.parse(periodOfValidity);
+        ;
+        this.contractType = contractType;
+        this.contents = contents;
+    }
+
+    public String getContents() {
+        return contents;
+    }
+
+    public void setContents(String contents) {
+        this.contents = contents;
     }
 
     public Advertisement() {
@@ -157,21 +158,22 @@ public class Advertisement implements Serializable {
         this.company = company;
     }
 
-    public String getDateAdded() {
+    public LocalDate getDateAdded() {
         return dateAdded;
     }
 
-    public void setDateAdded(String dateAdded) {
+    public void setDateAdded(LocalDate dateAdded) {
         this.dateAdded = dateAdded;
     }
 
-    public String getPeriodOfValidity() {
+    public LocalDate getPeriodOfValidity() {
         return periodOfValidity;
     }
 
-    public void setPeriodOfValidity(String periodOfValidity) {
+    public void setPeriodOfValidity(LocalDate periodOfValidity) {
         this.periodOfValidity = periodOfValidity;
     }
+
 
     public String getContractType() {
         return contractType;
@@ -181,39 +183,15 @@ public class Advertisement implements Serializable {
         this.contractType = contractType;
     }
 
-    public Survey getSurvey_Advertisement() {
-        return survey_Advertisement;
-    }
-
-    public void setSurvey_Advertisement(Survey survey_Advertisement) {
-        this.survey_Advertisement = survey_Advertisement;
-    }
 
     public Company getCompany_Advertisement() {
-        return company_Advertisement;
+        return companyAdvertisement;
     }
 
     public void setCompany_Advertisement(Company company_Advertisement) {
-        this.company_Advertisement = company_Advertisement;
+        this.companyAdvertisement = company_Advertisement;
     }
 
-    public Search getAdvertisement_Search() {
-        return advertisement_Search;
-    }
-
-    public void setAdvertisement_Search(Search advertisement_Search) {
-        this.advertisement_Search = advertisement_Search;
-    }
-
-    /*
-    public Application getApplication() {
-        return application;
-    }
-
-    public void setApplication(Application application) {
-        this.application = application;
-    }
-*/
 
     @Override
     public String toString() {

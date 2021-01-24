@@ -1,6 +1,6 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.User;
+import com.projektpk.szukajpracy.model.User;
 import com.projektpk.szukajpracy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-//mapping for restful request
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api")
@@ -47,19 +46,16 @@ public class UserController {
     }
 
     @GetMapping("/users/login/{login}")
-    public ResponseEntity<List<User>> getUserBylogin(@PathVariable("login") String login) {
-        try{
-        List <User> userData = repository.findByLogin(login);
+    public ResponseEntity<User> getUserBylogin(@PathVariable("login") String login) {
 
-        if (userData.isEmpty()) {
-            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<>(userData, HttpStatus.OK);
-    } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
-    }
-    }
+            User userData = repository.findByLogin(login);
 
+            if (userData != null) {
+                return new ResponseEntity<>(userData, HttpStatus.OK);
+            } else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }
+    }
 
     @PostMapping(value = "/users")
     public ResponseEntity<User> postUser(@RequestBody User user) {
@@ -136,56 +132,5 @@ public class UserController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-/*
-    @PostMapping("/login")
-    public ResponseEntity<Integer> login(@RequestBody User user)
-    {
 
-        int status;
-        HttpHeaders httpHeader = null;
-
-        // Authenticate User.
-        status = adminService.adminLogin(adminDetail.getEmailId(), adminDetail.getPassword());
-        if (status > 0)
-        {
-
-            String tokenData[] = generateToken.createJWT(adminDetail.getEmailId(), "JavaTpoint", "JWT Token",
-                    adminDetail.getRole(), 43200000);
-
-            // get Token.
-            String token = tokenData[0];
-
-            System.out.println("Authorization :: " + token);
-
-            // Create the Header Object
-            httpHeader = new HttpHeaders();
-
-            // Add token to the Header.
-            httpHeader.add("Authorization", token);
-
-            // Check if token is already exist.
-            long isUserEmailExists = tokenService.getTokenDetail(adminDetail.getEmailId());
-
-
-            if (isUserEmailExists > 0)
-            {
-                tokenService.updateToken(adminDetail.getEmailId(), token, tokenData[1]);
-            }
-            else
-            {
-                tokenService.saveUserEmail(adminDetail.getEmailId(), status);
-                tokenService.updateToken(adminDetail.getEmailId(), token, tokenData[1]);
-            }
-
-            return new ResponseEntity<Integer>(status, httpHeader, HttpStatus.OK);
-        }
-
-        // if not authenticated return  status what we get.
-        else
-        {
-            return new ResponseEntity<Integer>(status, httpHeader, HttpStatus.OK);
-        }
-    }
-
-*/
 }

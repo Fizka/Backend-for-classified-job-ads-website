@@ -1,7 +1,9 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.Certificate;
+import com.projektpk.szukajpracy.model.Certificate;
+import com.projektpk.szukajpracy.model.Customer;
 import com.projektpk.szukajpracy.repository.CertificateRepository;
+import com.projektpk.szukajpracy.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class CertificateController {
 
     @Autowired
     CertificateRepository repository;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     @GetMapping("/certificate")
     public ResponseEntity<List<Certificate>> getAllCertificates() {
@@ -45,12 +50,14 @@ public class CertificateController {
         }
     }
 
-
-    @PostMapping(value = "/certificate")
-    public ResponseEntity<Certificate> postCertificate(@RequestBody Certificate certificate) {
+    @PostMapping(value = "/certificate/{idCustomer}")
+    public ResponseEntity<Certificate> postCertificate(@PathVariable("idCustomer") long idCustomer, @RequestBody Certificate certificate) {
         try {
-            Certificate _certificate = repository.save(new Certificate( certificate.getTitle(),
-                    certificate.getType()));
+            Optional<Customer> userData = customerRepository.findById(idCustomer);
+            Certificate certificate_ = new Certificate(certificate.getTitle(),
+                    certificate.getType());
+            certificate_.setCustomer_Certficate(userData.get());
+            Certificate _certificate = repository.save(certificate_);
             return new ResponseEntity<>(_certificate, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);

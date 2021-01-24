@@ -1,7 +1,9 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.Course;
+import com.projektpk.szukajpracy.model.Course;
+import com.projektpk.szukajpracy.model.Customer;
 import com.projektpk.szukajpracy.repository.CourseRepository;
+import com.projektpk.szukajpracy.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class CourseController {
 
     @Autowired
     CourseRepository repository;
+
+    @Autowired
+    CustomerRepository customerRepository;
 
     @GetMapping("/courses")
     public ResponseEntity<List<Course>> getAllCourses() {
@@ -45,11 +50,13 @@ public class CourseController {
         }
     }
 
-
-    @PostMapping(value = "/courses")
-    public ResponseEntity<Course> postCourse(@RequestBody Course course) {
+    @PostMapping(value = "/courses/{idCustomer}")
+    public ResponseEntity<Course> postCourse(@PathVariable("idCustomer") long idCustomer, @RequestBody Course course) {
         try {
-            Course _course = repository.save(new Course( course.getTitle(), course.getType()));
+            Optional<Customer> userData = customerRepository.findById(idCustomer);
+            Course course_ = new Course(course.getTitle(), course.getType());
+            course_.setCustomer_Curse(userData.get());
+            Course _course = repository.save(course_);
             return new ResponseEntity<>(_course, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);

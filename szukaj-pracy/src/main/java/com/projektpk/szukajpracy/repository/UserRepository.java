@@ -1,12 +1,16 @@
 package com.projektpk.szukajpracy.repository;
-import com.projektpk.szukajpracy.Model.*;
+
+import com.projektpk.szukajpracy.model.*;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 
 
-public interface UserRepository extends CrudRepository<User,Long>{
+public interface UserRepository extends CrudRepository<User, Long> {
+
     List<User> findByusertype(int usertype);
+
     List<User> findBymail(String mail);
-    List<User> findByLogin(String login);
+
+    User findByLogin(String login);
 }
