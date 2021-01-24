@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 public class Archives implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idArchives;
 
     @Column(name = "title")

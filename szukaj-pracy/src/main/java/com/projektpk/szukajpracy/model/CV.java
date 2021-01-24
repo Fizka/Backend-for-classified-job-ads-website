@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -11,11 +11,11 @@ public class CV implements Serializable {
 
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idCV;
 
-    @Column(name = "personalData")
-    private String personalData;
+    @Column(name = "dane")
+    private String dane;
 
     @Column(name = "education")
     private String education;
@@ -40,21 +40,27 @@ public class CV implements Serializable {
     public CV() {
     }
 
-    public CV( String personalData, String education, String hobbies, String skills, String workExperience, Customer cv) {
-        this.personalData = personalData;
+    public CV(String dane, String education, String hobbies, String skills, String workExperience) {
+        this.dane = dane;
         this.education = education;
         this.hobbies = hobbies;
         this.skills = skills;
         this.workExperience = workExperience;
-        this.cv = cv;
     }
 
-    public CV( String personalData, String education, String hobbies, String skills, String workExperience) {
-        this.personalData = personalData;
+    public CV(String education, String hobbies, String skills, String workExperience) {
         this.education = education;
         this.hobbies = hobbies;
         this.skills = skills;
         this.workExperience = workExperience;
+    }
+
+    public String getDane() {
+        return dane;
+    }
+
+    public void setDane(String dane) {
+        this.dane = dane;
     }
 
     public long getIdCV() {
@@ -63,14 +69,6 @@ public class CV implements Serializable {
 
     public void setIdCV(long idCV) {
         this.idCV = idCV;
-    }
-
-    public String getPersonalData() {
-        return personalData;
-    }
-
-    public void setPersonalData(String personalData) {
-        this.personalData = personalData;
     }
 
     public String getEducation() {
@@ -117,7 +115,6 @@ public class CV implements Serializable {
     public String toString() {
         return "CV{" +
                 "idCV=" + idCV +
-                ", personalData='" + personalData + '\'' +
                 ", education='" + education + '\'' +
                 ", hobbies='" + hobbies + '\'' +
                 ", skills='" + skills + '\'' +

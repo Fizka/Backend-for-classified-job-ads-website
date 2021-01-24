@@ -1,7 +1,9 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.Question;
+import com.projektpk.szukajpracy.model.Question;
+import com.projektpk.szukajpracy.model.Survey;
 import com.projektpk.szukajpracy.repository.QuestionRepository;
+import com.projektpk.szukajpracy.repository.SurveyRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,9 @@ public class QuestionController {
 
     @Autowired
     QuestionRepository repository;
+
+    @Autowired
+    SurveyRepository surveyRepository;
 
     @GetMapping("/questions")
     public ResponseEntity<List<Question>> getAllQuestions() {
@@ -45,12 +50,14 @@ public class QuestionController {
         }
     }
 
-
-    @PostMapping(value = "/questions")
-    public ResponseEntity<Question> postQuestions(@RequestBody Question question) {
+    @PostMapping(value = "/questions/{idSearch}")
+    public ResponseEntity<Question> postQuestions(@PathVariable("idSearch") long idSearch, @RequestBody Question question) {
         try {
-            Question _question = repository.save(new Question(question.getAnswerOne(), question.getAnswerTwo(),
-                    question.getAnswerThree(), question.getAnswerCorrect(), question.getTitle()));
+            Optional<Survey> surveyData = surveyRepository.findById(idSearch);
+            Question question_ = new Question(question.getAnswerOne(), question.getAnswerTwo(),
+                    question.getAnswerThree(), question.getAnswerCorrect(), question.getTitle());
+            question_.setSurvey_question(surveyData.get());
+            Question _question = repository.save(question_);
             return new ResponseEntity<>(_question, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);

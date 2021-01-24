@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Question implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idQuestion;
 
     @Column(name = "idSurvey")
@@ -40,7 +40,7 @@ public class Question implements Serializable {
             nullable = false
     )
     @JsonIgnore
-    private Survey Survey_question;
+    private Survey Surveyquestion;
 
     public Question() {
     }
@@ -53,7 +53,7 @@ public class Question implements Serializable {
         this.answerThree = answerThree;
         this.answerCorrect = answerCorrect;
         this.title = title;
-        Survey_question = survey_question;
+        Surveyquestion = survey_question;
     }
 
     public Question(String answerOne, String answerTwo, String answerThree, String answerCorrect, String title) {
@@ -121,11 +121,11 @@ public class Question implements Serializable {
     }
 
     public Survey getSurvey_question() {
-        return Survey_question;
+        return Surveyquestion;
     }
 
     public void setSurvey_question(Survey survey_question) {
-        Survey_question = survey_question;
+        Surveyquestion = survey_question;
     }
 
     @Override

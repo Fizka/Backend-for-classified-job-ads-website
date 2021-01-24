@@ -1,9 +1,10 @@
 package com.projektpk.szukajpracy.controller;
 
 
-import com.projektpk.szukajpracy.Model.Company;
-import com.projektpk.szukajpracy.Model.User;
+import com.projektpk.szukajpracy.model.Company;
+import com.projektpk.szukajpracy.model.User;
 import com.projektpk.szukajpracy.repository.CompanyRepository;
+import com.projektpk.szukajpracy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,14 @@ import java.util.Optional;
 
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api")
 public class CompanyController {
 
     @Autowired
     CompanyRepository repository;
+
+    @Autowired
+    UserRepository repositoryUser;
 
     @GetMapping("/companies")
     public ResponseEntity<List<Company>> getAllCompanies() {
@@ -41,19 +45,23 @@ public class CompanyController {
         Optional<Company> userData = repository.findById(NIP);
 
         if (userData.isPresent()) {
+
             return new ResponseEntity<>(userData.get(), HttpStatus.OK);
         } else {
+
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
-
-
-        @PostMapping(value = "/companies")
-    public ResponseEntity<Company> postCompany(@RequestBody Company company, @RequestBody User user) {
+    @PostMapping(value = "/companies/lok/{idUser}")
+    public ResponseEntity<Company> postCompany(@PathVariable("idUser") long idUser, @RequestBody Company company) {
         try {
-            Company _user = repository.save(new Company( company.getCompanyName(),
-                    company.getAddress(), company.getCity(),company.getMail(), company.getPostalcode(), company.getREGON(), company.getKRS(), user ));
+            Optional<User> userData = repositoryUser.findById(idUser);
+            Company _company = new Company(company.getCompanyName(),
+                    company.getAddress(), company.getCity(), company.getMail(), company.getPostalcode(), company.getREGON(),
+                    company.getKRS());
+            _company.setUser_company(userData.get());
+            Company _user = repository.save(_company);
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -81,7 +89,17 @@ public class CompanyController {
 
     }
 
+    @GetMapping("/companies/find/{idUser}")
+    public ResponseEntity<Company> getCompanyByIdUser(@PathVariable("idUser") long idUser) {
+        Optional<User> userData = repositoryUser.findById(idUser);
+        Company cusotmerData = repository.findByUsercompany(userData.get());
 
+        if (cusotmerData != null) {
+            return new ResponseEntity<>(cusotmerData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 
     @PutMapping("/companies/{NIP}")
     public ResponseEntity<Company> updateCompany(@PathVariable("NIP") long NIP, @RequestBody Company company) {

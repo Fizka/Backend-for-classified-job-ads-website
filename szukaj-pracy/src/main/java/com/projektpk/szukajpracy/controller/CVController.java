@@ -1,8 +1,10 @@
 package com.projektpk.szukajpracy.controller;
 
 
-import com.projektpk.szukajpracy.Model.CV;
+import com.projektpk.szukajpracy.model.CV;
+import com.projektpk.szukajpracy.model.Customer;
 import com.projektpk.szukajpracy.repository.CVRepository;
+import com.projektpk.szukajpracy.repository.CustomerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,6 +22,9 @@ public class CVController {
     @Autowired
     CVRepository repository;
 
+    @Autowired
+    CustomerRepository customerRepository;
+
     @GetMapping("/cv")
     public ResponseEntity<List<CV>> getAllCV() {
         List<CV> cvs = new ArrayList<>();
@@ -35,6 +40,18 @@ public class CVController {
         }
     }
 
+    @GetMapping("/cv/find/{idCustomer}")
+    public ResponseEntity<CV> getCvByidCustomer(@PathVariable("idCustomer") long idCustomer) {
+        Optional<Customer> userData = customerRepository.findById(idCustomer);
+        CV cusotmerData = repository.findByCv(userData.get());
+
+        if (cusotmerData != null) {
+            return new ResponseEntity<>(cusotmerData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("/cv/{idCV}")
     public ResponseEntity<CV> getCVById(@PathVariable("idCV") long idCV) {
         Optional<CV> cvData = repository.findById(idCV);
@@ -46,12 +63,16 @@ public class CVController {
         }
     }
 
-
-    @PostMapping(value = "/cv")
-    public ResponseEntity<CV> postCV(@RequestBody CV cv) {
+    @PostMapping(value = "/cv/{idCustomer}")
+    public ResponseEntity<CV> postCV(@PathVariable("idCustomer") long idCustomer, @RequestBody CV cv) {
         try {
-            CV _user = repository.save(new CV( cv.getPersonalData(),
-                    cv.getEducation(), cv.getHobbies(), cv.getSkills(), cv.getWorkExperience()));
+            Optional<Customer> userData = customerRepository.findById(idCustomer);
+
+            CV cv_ = new CV(cv.getDane(), cv.getEducation(), cv.getHobbies(), cv.getSkills(), cv.getWorkExperience());
+            cv_.setCv(userData.get());
+
+            CV _user = repository.save(cv_);
+
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -84,12 +105,13 @@ public class CVController {
         Optional<CV> cvData = repository.findById(idCV);
 
         if (cvData.isPresent()) {
+
             CV _cv = cvData.get();
             _cv.setEducation(cv.getEducation());
             _cv.setHobbies(cv.getHobbies());
-            _cv.setPersonalData(cv.getPersonalData());
             _cv.setSkills(cv.getSkills());
             _cv.setWorkExperience(cv.getWorkExperience());
+
             return new ResponseEntity<>(repository.save(_cv), HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

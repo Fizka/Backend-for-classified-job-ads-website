@@ -1,6 +1,6 @@
 package com.projektpk.szukajpracy.controller;
 
-import com.projektpk.szukajpracy.Model.Search;
+import com.projektpk.szukajpracy.model.Search;
 import com.projektpk.szukajpracy.repository.SearchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
 @CrossOrigin(origins = "http://localhost:4200")
 @RestController
 @RequestMapping("/api/")
@@ -18,7 +19,7 @@ public class SearchController {
     @Autowired
     SearchRepository repository;
 
-    @GetMapping("")
+    @GetMapping("/search")
     public ResponseEntity<List<Search>> getAllSearch() {
         List<Search> search = new ArrayList<>();
         try {
@@ -44,18 +45,17 @@ public class SearchController {
         }
     }
 
-
-    @PostMapping(value = "")
+    @PostMapping(value = "/search")
     public ResponseEntity<Search> postSearch(@RequestBody Search search) {
         try {
-            Search _search = repository.save(new Search(search.getIndustry(), search.getPosition(), search.getSpecyfication() ));
+            Search _search = repository.save(new Search(search.getIndustry(), search.getPosition(), search.getSpecyfication()));
             return new ResponseEntity<>(_search, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
         }
     }
 
-    @DeleteMapping("/{idSearch}")
+    @DeleteMapping("/search/{idSearch}")
     public ResponseEntity<HttpStatus> deleteSearch(@PathVariable("idSearch") long idSearch) {
         try {
             repository.deleteById(idSearch);
@@ -65,7 +65,7 @@ public class SearchController {
         }
     }
 
-    @DeleteMapping("")
+    @DeleteMapping("/search")
     public ResponseEntity<HttpStatus> deleteAllSearch() {
         try {
             repository.deleteAll();
@@ -76,8 +76,21 @@ public class SearchController {
 
     }
 
+    @GetMapping(value = "search/industry/{id}")
+    public ResponseEntity<List<Search>> findBysearchindustry(@PathVariable String id) {
+        try {
 
-    @PutMapping("/{idSearch}")
+            List<Search> users = repository.findByIndustry(id);
+            if (users.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(users, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(HttpStatus.EXPECTATION_FAILED);
+        }
+    }
+
+    @PutMapping("/search/{idSearch}")
     public ResponseEntity<Search> updateSearch(@PathVariable("idSearch") long idSearch, @RequestBody Search serach) {
         Optional<Search> userData = repository.findById(idSearch);
 

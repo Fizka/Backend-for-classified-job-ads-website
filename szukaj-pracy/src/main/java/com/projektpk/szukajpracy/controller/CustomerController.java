@@ -1,8 +1,10 @@
 package com.projektpk.szukajpracy.controller;
 
 
-import com.projektpk.szukajpracy.Model.Customer;
+import com.projektpk.szukajpracy.model.Customer;
+import com.projektpk.szukajpracy.model.User;
 import com.projektpk.szukajpracy.repository.CustomerRepository;
+import com.projektpk.szukajpracy.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,9 @@ public class CustomerController {
 
     @Autowired
     CustomerRepository repository;
+
+    @Autowired
+    UserRepository repositoryUser;
 
     @GetMapping("/customers")
     public ResponseEntity<List<Customer>> getAllCustomers() {
@@ -46,12 +51,26 @@ public class CustomerController {
         }
     }
 
+    @GetMapping("/customers/find/{idUser}")
+    public ResponseEntity<Customer> getCustomerByIdUser(@PathVariable("idUser") long idUser) {
+        Optional<User> userData = repositoryUser.findById(idUser);
+        Customer cusotmerData = repository.findCustomerByUserCustomer(userData.get());
 
-    @PostMapping(value = "/customers")
-    public ResponseEntity<Customer> postCustomer(@RequestBody Customer customer) {
+        if (cusotmerData != null) {
+            return new ResponseEntity<>(cusotmerData, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @PostMapping(value = "/customers/{idUser}")
+    public ResponseEntity<Customer> postCustomer(@PathVariable("idUser") long idUser, @RequestBody Customer customer) {
         try {
-            Customer _customer = repository.save(new Customer(customer.getFirstName(), customer.getLastName(),
-                    customer.getAddress(), customer.getPesel(), customer.getPesel()));
+            Optional<User> userData = repositoryUser.findById(idUser);
+            Customer cust = new Customer(customer.getFirstName(), customer.getLastName(),
+                    customer.getAddress(), customer.getPesel(), customer.getPhonenumber());
+            cust.setUser_Customer(userData.get());
+            Customer _customer = repository.save(cust);
             return new ResponseEntity<>(_customer, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.EXPECTATION_FAILED);
@@ -89,7 +108,6 @@ public class CustomerController {
             _customer.setAddress(customer.getAddress());
             _customer.setCertificate(customer.isCertificate());
             _customer.setCourse(customer.isCourse());
-            //TODO sprawdz cv boolean
             _customer.setCv(customer.isCv());
             _customer.setFirstName(customer.getFirstName());
             _customer.setLastName(customer.getLastName());

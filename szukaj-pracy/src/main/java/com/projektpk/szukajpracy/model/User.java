@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
@@ -11,7 +11,7 @@ import java.io.Serializable;
 public class User implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idUser;
 
     @Column(name = "password")
@@ -29,25 +29,7 @@ public class User implements Serializable {
     @Column(name = "active")
     private boolean active;
 
-    /*
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(name = "user_company", nullable = false)
-    @JsonIgnore
-    private Company company_User;
-
-    @OneToOne(
-            fetch = FetchType.LAZY,
-            optional = false
-    )
-    @JoinColumn(name = "user_Customer", nullable = false)
-    @JsonIgnore
-    private Customer customer_User;
-*/
-
-    public User(){
+    public User() {
     }
 
     public User(String password, String login, String mail, int usertype, boolean active) {
@@ -114,23 +96,6 @@ public class User implements Serializable {
         this.active = active;
     }
 
-    /*
-    public Company getCompany_User() {
-        return company_User;
-    }
-
-    public void setCompany_User(Company company_User) {
-        this.company_User = company_User;
-    }
-
-    public Customer getCustomer_User() {
-        return customer_User;
-    }
-
-    public void setCustomer_User(Customer customer_User) {
-        this.customer_User = customer_User;
-    }
-*/
     @Override
     public String toString() {
         return "User{" +

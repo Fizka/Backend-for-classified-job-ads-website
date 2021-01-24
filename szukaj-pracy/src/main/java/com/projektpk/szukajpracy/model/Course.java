@@ -1,4 +1,4 @@
-package com.projektpk.szukajpracy.Model;
+package com.projektpk.szukajpracy.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -10,7 +10,7 @@ import java.io.Serializable;
 public class Course implements Serializable {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long idCourse;
 
     @Column(name = "title")
@@ -28,18 +28,18 @@ public class Course implements Serializable {
             nullable = false
     )
     @JsonIgnore
-    private Customer customer_Curse;
+    private Customer customerCurse;
 
-    public Course( String title, String type, Customer customer_Curse) {
+    public Course(String title, String type, Customer customer_Curse) {
         this.title = title;
         this.type = type;
-        this.customer_Curse = customer_Curse;
+        this.customerCurse = customer_Curse;
     }
 
     public Course() {
     }
 
-    public Course( String title, String type) {
+    public Course(String title, String type) {
         this.title = title;
         this.type = type;
     }
@@ -69,11 +69,11 @@ public class Course implements Serializable {
     }
 
     public Customer getCustomer_Curse() {
-        return customer_Curse;
+        return customerCurse;
     }
 
     public void setCustomer_Curse(Customer customer_Curse) {
-        this.customer_Curse = customer_Curse;
+        this.customerCurse = customer_Curse;
     }
 
     @Override
